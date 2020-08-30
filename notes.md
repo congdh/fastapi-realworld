@@ -74,6 +74,18 @@ Làm theo tutorial [FastAPI Debugging](https://fastapi.tiangolo.com/tutorial/deb
 ## Running API tests locally
 Follow guide [RealWorld API Spec](postman/README.md)
 
-## Unittest
+## First unit testcase
 Follow guide [Testing](https://fastapi.tiangolo.com/tutorial/testing/) and [Async Tests](https://fastapi.tiangolo.com/advanced/async-tests/)
 > Refactor sử dụng fixture client tham khảo [Full Stack FastAPI PostgreSQL](https://github.com/tiangolo/full-stack-fastapi-postgresql)
+
+Cấu trúc thư mục tests
+```
+.
+└── tests
+    ├── __init__.py
+    ├── api
+    │   ├── __init__.py
+    │   ├── test_users.py
+    │   └── test_users_async.py
+    └── conftest.py
+```
