@@ -7,7 +7,7 @@ API Spec download from [RealWork API repo](https://github.com/gothinkster/realwo
 To locally run the provided Postman collection against your backend, execute:
 
 ```
-APIURL=http://localhost:8000/api ./run-api-tests.sh
+APIURL=http://localhost:8000/api bash ./run-api-tests.sh
 ```
 
 Success test results like this
