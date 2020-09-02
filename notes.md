@@ -11,7 +11,7 @@
 - [ ] Docker run
 
 ## Poetry
-```
+```commandline
 brew install poetry
 poetry init
 poetry install
@@ -158,3 +158,15 @@ API implement
 > - Hoàn thành 1 API hoàn chỉnh
 > - Cấu trúc thư mục cho 1 ứng dụng lớn sử dụng FastAPI
 > - Sử dụng Faker để fake dữ liệu khi unittest
+
+## Users API
+API implement
+- GET /users: Get Current User
+- PUT /users: Update Current User
+
+> **_`Knowledge`_** 
+> - Utils function for unittest để setup dữ liệu cho testcase
+> - pytest coverage report
+>   ```commandline
+>   pytest --cov-report term-missing --cov=app tests/
+>   ```

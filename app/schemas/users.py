@@ -1,9 +1,9 @@
-# Shared properties
 from typing import Optional
 
-from pydantic import EmailStr, BaseModel
+from pydantic import EmailStr, BaseModel, HttpUrl
 
 
+# Shared properties
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     username: Optional[str] = None
@@ -52,3 +52,11 @@ class UserResponse(BaseModel):
 class LoginUser(BaseModel):
     email: str
     password: str
+
+
+class UserInUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    bio: Optional[str] = None
+    image: Optional[HttpUrl] = None
