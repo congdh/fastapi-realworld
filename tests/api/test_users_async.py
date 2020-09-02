@@ -1,11 +1,13 @@
 import pytest
 from httpx import AsyncClient
-
-from app.main import app
+from starlette import status
 
 
 @pytest.mark.asyncio
-async def test_read_users(async_client: AsyncClient):
-    response = await async_client.get("/users/")
-    assert response.status_code == 200
-    assert response.json() == [{'username': 'Foo'}, {'username': 'Bar'}]
+async def test_user_login_failure(async_client: AsyncClient):
+    login_data = {"user": {"email": "u1596352021", "password": "passwordxxx"}}
+    r = await async_client.post(f"/api/users/login", json=login_data)
+    user_response = r.json()
+    assert r.status_code == status.HTTP_400_BAD_REQUEST
+    assert "detail" in user_response
+    assert user_response['detail'] == 'Incorrect email or password'

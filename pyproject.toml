@@ -10,12 +10,18 @@ python = "^3.8"
 fastapi = "^0.61.1"
 uvicorn = "^0.11.8"
 pytest-asyncio = "^0.14.0"
+sqlalchemy = "^1.3.19"
+pydantic = {version = "^1.6.1", extras = ["email"]}
+python-jose = {version = "^3.2.0", extras = ["cryptography"]}
+passlib = {version = "^1.7.2", extras = ["bcrypt"]}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 requests = "^2.24.0"
 httpx = "^0.14.2"
 pytest-asyncio = "^0.14.0"
+Faker = "^4.1.2"
+pytest-cov = "^2.10.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
