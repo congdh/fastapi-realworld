@@ -5,7 +5,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app import models
-from tests.utils.users import TEST_USER_EMAIL, TEST_USER_USERNAME, TEST_USER_PASSWORD
+from tests.utils.users import TEST_USER_PASSWORD
 
 JWT_TOKEN_PREFIX = "Token"  # noqa: S105
 
@@ -96,7 +96,7 @@ def test_retrieve_current_user_wrong_token(client: TestClient):
     assert r.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def test_retrieve_current_success(client: TestClient, token: str):
+def test_retrieve_current_success(client: TestClient, test_user: models.User, token: str):
     headers = {'Authorization': f'{JWT_TOKEN_PREFIX} {token}'}
     r = client.get(f"/api/users", headers=headers)
     assert r.status_code == status.HTTP_200_OK
@@ -106,25 +106,25 @@ def test_retrieve_current_success(client: TestClient, token: str):
     user_with_token = user_response.get('user')
     assert isinstance(user_with_token, Dict)
     assert 'email' in user_with_token
-    assert user_with_token['email'] == TEST_USER_EMAIL
+    assert user_with_token['email'] == test_user.email
     assert 'username' in user_with_token
-    assert user_with_token['username'] == TEST_USER_USERNAME
+    assert user_with_token['username'] == test_user.username
     assert 'token' in user_with_token
     assert 'bio' in user_with_token
     assert 'image' in user_with_token
 
 
-def test_update_current_user_with_new_username(client: TestClient, token: str):
+def test_update_current_user_with_new_username(client: TestClient, test_user: models.User, token: str):
     headers = {'Authorization': f'{JWT_TOKEN_PREFIX} {token}'}
-    new_username = f'{TEST_USER_USERNAME}xxx'
+    new_username = f'{test_user.username}xxx'
     user_update = {"user": {"username": new_username}}
     r = client.put(f"/api/users", json=user_update, headers=headers)
-    assert r.status_code == status.HTTP_400_BAD_REQUEST
+    assert r.status_code == status.HTTP_200_OK
 
 
-def test_update_current_success(client: TestClient, token: str):
+def test_update_current_user_with_new_email(client: TestClient, test_user: models.User, token: str):
     headers = {'Authorization': f'{JWT_TOKEN_PREFIX} {token}'}
-    new_email = f'{TEST_USER_EMAIL}xxx'
+    new_email = f'{test_user.email}xxx'
     user_update = {"user": {"email": new_email}}
     r = client.put(f"/api/users", json=user_update, headers=headers)
     assert r.status_code == status.HTTP_200_OK
@@ -136,7 +136,7 @@ def test_update_current_success(client: TestClient, token: str):
     assert 'email' in user_with_token
     assert user_with_token['email'] == new_email
     assert 'username' in user_with_token
-    assert user_with_token['username'] == TEST_USER_USERNAME
+    assert user_with_token['username'] == test_user.username
     assert 'token' in user_with_token
     assert 'bio' in user_with_token
     assert 'image' in user_with_token

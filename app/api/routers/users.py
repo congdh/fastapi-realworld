@@ -10,11 +10,11 @@ from app.core import security
 router = APIRouter()
 
 
-@router.post("", name="Register a new user", response_model=schemas.UserResponse)
+@router.post("", name="Register a new user", description="Register a new user", response_model=schemas.UserResponse)
 async def register(
-        user_in: schemas.UserCreate = Body(
-            ..., embed=True, alias="user"),
-        db: Session = Depends(deps.get_db)
+    user_in: schemas.UserCreate = Body(
+        ..., embed=True, alias="user"),
+    db: Session = Depends(deps.get_db)
 ) -> schemas.UserResponse:
     user = crud.user.get_user_by_email(db, email=user_in.email)
     if user:
@@ -35,11 +35,12 @@ async def register(
     )
 
 
-@router.post("/login", name="Login and Remember Token", response_model=schemas.UserResponse)
+@router.post("/login", name="Login and Remember Token", description="Login for existing user",
+             response_model=schemas.UserResponse)
 async def login(
-        user_login: schemas.LoginUser = Body(..., embed=True,
-                                             alias="user", name="Credentials to use"),
-        db: Session = Depends(deps.get_db)
+    user_login: schemas.LoginUser = Body(..., embed=True,
+                                         alias="user", name="Credentials to use"),
+    db: Session = Depends(deps.get_db)
 ) -> schemas.UserResponse:
     user = crud.user.authenticate(
         db, email=user_login.email, password=user_login.password
@@ -58,9 +59,10 @@ async def login(
     )
 
 
-@router.get("", name="Get current user", response_model=schemas.UserResponse)
+@router.get("", name="Get current user", description="Gets the currently logged-in user",
+            response_model=schemas.UserResponse)
 async def retrieve_current_user(
-        current_user: models.User = Depends(deps.get_current_user)
+    current_user: models.User = Depends(deps.get_current_user)
 ) -> schemas.UserResponse:
     token = security.create_access_token(
         current_user.id
@@ -76,12 +78,13 @@ async def retrieve_current_user(
     )
 
 
-@router.put("", name="Update current user", response_model=schemas.UserResponse)
+@router.put("", name="Update current user", description="Updated user information for current user",
+            response_model=schemas.UserResponse)
 async def update_current_user(
-        user_update: schemas.UserInUpdate = Body(
-            ..., embed=True, alias="user"),
-        current_user: models.User = Depends(deps.get_current_user),
-        db: Session = Depends(deps.get_db)
+    user_update: schemas.UserInUpdate = Body(
+        ..., embed=True, alias="user"),
+    current_user: models.User = Depends(deps.get_current_user),
+    db: Session = Depends(deps.get_db)
 ) -> schemas.UserResponse:
     if user_update.username and user_update.username != current_user.username:
         user = crud.user.get_user_by_username(
@@ -91,8 +94,7 @@ async def update_current_user(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="user with this username already exists",
             )
     if user_update.email and user_update.email != current_user.email:
-        user = crud.user.get_user_by_email(
-            db, email=user_update.email)
+        user = crud.user.get_user_by_email(db, email=user_update.email)
         if user:
             raise HTTPException(
                 status_code=HTTP_400_BAD_REQUEST, detail="user with this email already exists",

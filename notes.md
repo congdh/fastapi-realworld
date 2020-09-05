@@ -170,3 +170,23 @@ API implement
 >   ```commandline
 >   pytest --cov-report term-missing --cov=app tests/
 >   ```
+
+## Refactor code
+
+- [x] Editor config
+- [x] Improve OpenAPI document
+- [ ] Unittest CRUD
+- [ ] Alembic
+- [ ] Async SQL (Relational) Databases? => reference [FastAPI Users
+](https://frankie567.github.io/fastapi-users/configuration/databases/sqlalchemy/)
+
+> **_`Knowledge`_** 
+> - Editor config
+> - devtool: Python's missing debug print command and other development tools.
+> - [Schema Extra - Example](https://fastapi.tiangolo.com/tutorial/schema-extra-example/)
+> - Protect password field with SecretStr type
+> - [ ] Design users management system
+> - [ ] Migrate SQL database
+> - [ ] Unittest database
+> - [ ] Async SQL Database with FastAPI
+> - [ ] FastAPI on_event startup, shutdown

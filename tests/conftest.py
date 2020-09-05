@@ -28,11 +28,11 @@ def db() -> Generator:
     yield SessionLocal()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def test_user(db: Session) -> models.User:
     return get_test_user(db)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def token(test_user: models.User) -> str:
     return get_test_user_token(test_user)

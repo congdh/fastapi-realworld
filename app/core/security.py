@@ -4,7 +4,7 @@ from typing import Any, Union
 from fastapi import HTTPException
 from jose import jwt
 from passlib.context import CryptContext
-from pydantic import ValidationError
+from pydantic import ValidationError, SecretStr
 from starlette import status
 
 from app.core.config import settings
@@ -42,9 +42,9 @@ def get_user_id_from_token(token: str) -> str:
         )
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+def verify_password(plain_password: SecretStr, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password.get_secret_value(), hashed_password)
 
 
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+def get_password_hash(password: SecretStr) -> str:
+    return pwd_context.hash(password.get_secret_value())
