@@ -175,8 +175,8 @@ API implement
 
 - [x] Editor config
 - [x] Improve OpenAPI document
-- [ ] Unittest CRUD
-- [ ] Alembic
+- [x] Unittest CRUD
+- [x] Alembic
 - [ ] Async SQL (Relational) Databases? => reference [FastAPI Users
 ](https://frankie567.github.io/fastapi-users/configuration/databases/sqlalchemy/)
 
@@ -186,7 +186,69 @@ API implement
 > - [Schema Extra - Example](https://fastapi.tiangolo.com/tutorial/schema-extra-example/)
 > - Protect password field with SecretStr type
 > - [ ] Design users management system
-> - [ ] Migrate SQL database
-> - [ ] Unittest database
+> - [x] Migrate SQL database
+> - [x] Unittest database
 > - [ ] Async SQL Database with FastAPI
 > - [ ] FastAPI on_event startup, shutdown
+
+### Refactor code - Alembic
+> Reference: [FastAPI with SQLAlchemy, PostgreSQL and Alembic and of course Docker [Part-1]](https://medium.com/@ahmed.nafies/fastapi-with-sqlalchemy-postgresql-and-alembic-and-of-course-docker-f2b7411ee396)
+
+Add alembic package using poetry
+```commandline
+poetry add alembic
+``` 
+
+Init alembic
+```commandline
+alembic init alembic
+```
+
+that will create config file `alembic.ini` and directory `alembic`
+
+In config file `alembic.ini`, change line 38
+```ini
+sqlalchemy.url = driver://user:pass@localhost/dbname
+```
+
+to URI connection of database (SQLite)
+```ini
+sqlalchemy.url = sqlite:///./sql_app.db
+```
+
+Create `base.py` file in directory `app/db` and import all models before uses it in alembic. File `base.py` look like this
+```python
+# Import all the models, so that Base has them before being
+# imported by Alembic
+from app.db.base_class import Base  # noqa
+from app.models.users import User  # noqa
+```
+
+In file `alembic/env.py`, set target metadata from `None` to `app.db.base.Base.metadata` 
+
+```python
+# add your model's MetaData object here
+# for 'autogenerate' support
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
+from app.db.base import Base
+target_metadata = Base.metadata
+```
+
+Add 2 line below at head line for add sys.path relative to the current running script
+```python
+import sys, pathlib
+sys.path.append(str(pathlib.Path().absolute()))
+```
+OK, now lets delete old SQLite file and make our first migration
+```shell script
+find . -name sql_app.db | xargs rm
+alembic revision --autogenerate -m "First migration"
+```
+then migrate database
+```shell script
+alembic upgrade head
+```
+
+> **_`Knowledge`_** 
+> - Migrate SQL database using Alembic
