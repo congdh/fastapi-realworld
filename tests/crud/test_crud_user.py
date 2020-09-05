@@ -23,7 +23,7 @@ def test_create_user(db: Session) -> None:
     assert security.verify_password(SecretStr(password), user.hashed_password)
 
 
-def test_authenticate_user(db: Session) -> None:
+def test_authenticate_user_success(db: Session) -> None:
     faker = Faker()
     profile = faker.profile()
     email = profile.get('mail', None)
@@ -32,6 +32,15 @@ def test_authenticate_user(db: Session) -> None:
 
     user_in = schemas.UserCreate(username=username, email=email, password=SecretStr(password))
     user = crud.user.create(db=db, obj_in=user_in)
+
+    wrong_email = email + 'xxx'
+    authenticated_user = crud.user.authenticate(db, email=wrong_email, password=SecretStr(password))
+    assert not authenticated_user
+
+    wrong_password = password + 'xxx'
+    authenticated_user = crud.user.authenticate(db, email=email, password=SecretStr(wrong_password))
+    assert not authenticated_user
+
     authenticated_user = crud.user.authenticate(db, email=email, password=SecretStr(password))
     assert authenticated_user
     assert user.email == authenticated_user.email
