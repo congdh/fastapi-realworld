@@ -25,7 +25,7 @@ format:
 	poetry run isort --recursive --apply app tests
 
 lint:
-#	poetry run mypy --show-error-codes app
+	poetry run mypy --show-error-codes app
 	poetry run flake8
 
 test: install
