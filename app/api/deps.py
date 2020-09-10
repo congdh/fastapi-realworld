@@ -1,3 +1,5 @@
+from typing import Generator
+
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
 from sqlalchemy.orm import Session
@@ -10,7 +12,7 @@ from app.db.session import SessionLocal
 JWT_TOKEN_PREFIX = "Token"  # noqa: S105
 
 
-def get_db():
+def get_db() -> Generator:
     db = SessionLocal()
     try:
         yield db

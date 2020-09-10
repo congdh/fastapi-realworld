@@ -34,7 +34,7 @@ class CRUDUser(CRUDBase[models.User, schemas.UserCreate, schemas.UserUpdate]):
             return None
         return user
 
-    def get_user_by_id(self, db: Session, user_id: int):
+    def get_user_by_id(self, db: Session, user_id: int) -> Optional[models.User]:
         return db.query(models.User).filter(models.User.id == user_id).first()
 
     def get_user_by_username(self, db: Session, username: str) -> Optional[models.User]:

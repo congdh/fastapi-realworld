@@ -94,7 +94,7 @@ def test_retrieve_current_user_wrong_token(client: TestClient):
     r = client.get(API_USERS, headers=headers)
     assert r.status_code == status.HTTP_401_UNAUTHORIZED
 
-    wrong_signature_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTA3NzM3LCJ1c2VybmFtZSI6InUxNTk2MzUyMDIxIiwiZXhwIjoxNjA0MjExMjUyfQ.qsyv6QGAIE1kk_ZQucj2IIs_zRvvO-HYqjMQ1Z9TGcw"
+    wrong_signature_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTA3NzM3LCJ1c2VybmFtZSI6InUxNTk2MzUyMDIxIiwiZXhwIjoxNjA0MjExMjUyfQ.qsyv6QGAIE1kk_ZQucj2IIs_zRvvO-HYqjMQ1Z9TGcw"  # noqa
     headers = {"Authorization": f"{JWT_TOKEN_PREFIX} {wrong_signature_token}"}
     r = client.get(API_USERS, headers=headers)
     assert r.status_code == status.HTTP_401_UNAUTHORIZED

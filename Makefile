@@ -1,5 +1,7 @@
-.PHONY: clean install
-.DEFAULT_GOAL = clean
+.PHONY: clean install all default
+.DEFAULT_GOAL = default
+
+default: install clean format lint coverage
 
 clean:
 	@echo "remove all build, test, coverage and Python artifacts"
@@ -23,5 +25,11 @@ format:
 	poetry run isort --recursive --apply app tests
 
 lint:
-	poetry run mypy --ignore-missing-import app tests
+#	poetry run mypy --show-error-codes app
 	poetry run flake8
+
+test: install
+	poetry run pytest
+
+coverage: install
+	poetry run pytest --cov=app --cov-report=term-missing tests

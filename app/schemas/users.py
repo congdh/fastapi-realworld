@@ -18,11 +18,6 @@ class UserCreate(UserBase):
     password: SecretStr = Field(..., example="changeit")
 
 
-# Properties to receive via API on update
-class UserUpdate(UserBase):
-    password: Optional[str] = Field(None, example="changeit")
-
-
 # Properties shared by models stored in DB
 class UserInDBBase(UserBase):
     id: Optional[int] = None
@@ -45,6 +40,7 @@ class UserWithToken(UserBase):
     token: str = Field(
         ...,
         example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTk3MjI3MTIsInN1YiI6IjEifQ.cTWIopIYrXLEeRix_sTiqx6RRBuXG4a6xVUcMKyovWA",
+        # noqa
     )
 
 
@@ -63,6 +59,11 @@ class LoginUser(BaseModel):
                 "password": "changeit",
             }
         }
+
+
+# Properties to receive via API on update
+class UserUpdate(UserBase):
+    password: Optional[str] = Field(None, example="changeit")
 
 
 class UserInUpdate(BaseModel):

@@ -96,7 +96,7 @@ async def retrieve_current_user(
     response_model=schemas.UserResponse,
 )
 async def update_current_user(
-    user_update: schemas.UserInUpdate = Body(..., embed=True, alias="user"),
+    user_update: schemas.UserUpdate = Body(..., embed=True, alias="user"),
     current_user: models.User = Depends(deps.get_current_user),
     db: Session = Depends(deps.get_db),
 ) -> schemas.UserResponse:

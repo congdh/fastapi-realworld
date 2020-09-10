@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI
 
 from app.api import api
 from app.db import base_class  # noqa
@@ -8,12 +8,6 @@ from app.db import session
 app = FastAPI()
 
 base_class.Base.metadata.create_all(bind=session.engine)
-
-
-async def get_token_header(x_token: str = Header(...)):
-    if x_token != "fake-super-secret-token":
-        raise HTTPException(status_code=400, detail="X-Token header invalid")
-
 
 app.include_router(api.api_router, prefix="/api")
 
