@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic.types import SecretStr
 from sqlalchemy.orm import Session
 
-from app import schemas, models
-from app.core.security import verify_password, get_password_hash
+from app import models, schemas
+from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
 
 
@@ -24,7 +24,9 @@ class CRUDUser(CRUDBase[models.User, schemas.UserCreate, schemas.UserUpdate]):
         db.refresh(db_obj)
         return db_obj
 
-    def authenticate(self, db: Session, *, email: str, password: SecretStr) -> Optional[models.User]:
+    def authenticate(
+        self, db: Session, *, email: str, password: SecretStr
+    ) -> Optional[models.User]:
         user = self.get_user_by_email(db, email=email)
         if not user:
             return None

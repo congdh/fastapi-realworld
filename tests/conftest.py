@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app import models
 from app.db.session import SessionLocal
 from app.main import app
-from .utils.users import get_test_user_token, get_test_user
+from .utils.users import get_test_user, get_test_user_token
 
 
 @pytest.fixture(scope="module")

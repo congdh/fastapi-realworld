@@ -4,7 +4,7 @@ from typing import Any, Union
 from fastapi import HTTPException
 from jose import jwt
 from passlib.context import CryptContext
-from pydantic import ValidationError, SecretStr
+from pydantic import SecretStr, ValidationError
 from starlette import status
 
 from app.core.config import settings
@@ -15,7 +15,7 @@ ALGORITHM = "HS256"
 
 
 def create_access_token(
-        subject: Union[str, Any], expires_delta: timedelta = None
+    subject: Union[str, Any], expires_delta: timedelta = None
 ) -> str:
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -30,9 +30,7 @@ def create_access_token(
 
 def get_user_id_from_token(token: str) -> str:
     try:
-        payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=ALGORITHM
-        )
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=ALGORITHM)
         user_id = payload.get("sub", None)
         return user_id
     except (jwt.JWTError, ValidationError):

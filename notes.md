@@ -250,5 +250,35 @@ then migrate database
 alembic upgrade head
 ```
 
-> **_`Knowledge`_** 
+> **_`Knowledge`_**
 > - Migrate SQL database using Alembic
+
+### Refactor code - Formating & Linting
+> References:
+>
+> - [MY PYTHON PROJECT SETUP](https://srcco.de/posts/my-python-poetry-project-setup-calver-2020.html)
+>
+> - [Blazing fast CI with GitHub Actions, Poetry, Black and Pytest](https://medium.com/@vanflymen/blazing-fast-ci-with-github-actions-poetry-black-and-pytest-9e74299dd4a5)
+
+Install packages
+
+```commandline
+poetry add --dev black --allow-prereleases
+poetry add --dev isort
+poetry add --dev autoflake
+poetry add --dev mypy
+poetry add --dev flake8
+```
+
+Create [Makefile](Makefile)
+Run make command with option you want
+
+```commandline
+make format
+make lint
+```
+
+> **_`Knowledge`_**
+> - Code formating tools: Black, autoflake, isort
+> - Code linting tools: Flake8, MyPy
+> - Make to leverage muscle memory
